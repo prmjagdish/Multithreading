@@ -1,0 +1,68 @@
+Goal: Understand what a thread actually is
+
++ What is a Thread (really)?
+    A thread is a path of execution inside a process.
+    Process → JVM running
+    Thread → independent execution flow inside that JVM
+    All threads share heap memory
+    Each thread has its own stack
+    So when you start multiple threads, the CPU scheduler decides who runs when.
+
+ + Thread vs Runnable (core distinction)
+
+    Thread
+    Represents both the task and the execution
+    You extend Thread and override run()
+
+    Runnable
+    Represents only the task
+    Execution is handled by a Thread
+
++ Prefer Runnable (separates what to do from how to run)
+    NEW
+    ↓ start()
+    RUNNABLE ←─ scheduler picks
+    ↓
+    RUNNING
+    ↓
+    WAITING / TIMED_WAITING (sleep, join, wait)
+    ↓
+    TERMINATED
+
+    Key points:
+    start() → creates a new call stack
+    run() called directly ❌ → runs like a normal method (NO new thread)
+
++ sleep() vs join() (very important)
+
+    sleep(ms)
+    Pauses current thread
+    Does not release locks
+    Does not coordinate threads
+
+
+    join()
+    One thread waits for another thread to finish
+    Used for coordination
+    worker.join(); // main waits
+
+    👉 sleep ≠ synchronization
+    Sleep just delays — it doesn’t guarantee order.
+
++ Thread names & priorities
+    Thread name
+    Helps with debugging & logs.
+
+    Thread t = new Thread(task, "Worker-1");
+
+    Priority
+    Hint to scheduler (NOT guaranteed)
+    t.setPriority(Thread.MAX_PRIORITY); // 10
+
+    ⚠️ Priority is platform dependent. Never rely on it for correctness.
+
+✔ Threads run independently
+✔ Order is not deterministic
+✔ sleep() delays, join() coordinates
+✔ Thread names matter for debugging
+✔ Priority is a hint, not a rule
