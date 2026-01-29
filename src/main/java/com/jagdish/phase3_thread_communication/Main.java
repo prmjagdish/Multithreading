@@ -1,4 +1,4 @@
-package com.jagdish.thread_communication;
+package com.jagdish.phase3_thread_communication;
 
 public class Main {
 

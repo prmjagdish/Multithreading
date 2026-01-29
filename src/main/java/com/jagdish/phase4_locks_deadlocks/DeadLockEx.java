@@ -1,4 +1,4 @@
-package com.jagdish.locks_deadlocks;
+package com.jagdish.phase4_locks_deadlocks;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

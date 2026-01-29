@@ -1,4 +1,4 @@
-package com.jagdish.race_condition_synchronization.broken;
+package com.jagdish.phase2_race_condition_synchronization.fixed;
 
 public class Main {
 

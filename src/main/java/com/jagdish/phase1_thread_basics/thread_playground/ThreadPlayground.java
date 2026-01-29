@@ -1,4 +1,4 @@
-package com.jagdish.thread_basics.thread_playground;
+package com.jagdish.phase1_thread_basics.thread_playground;
 
 public class ThreadPlayground {
     static void main(String[] args) throws InterruptedException {

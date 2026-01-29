@@ -1,4 +1,4 @@
-package com.jagdish.locks_deadlocks;
+package com.jagdish.phase4_locks_deadlocks;
 
 class Bank {
 

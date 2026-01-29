@@ -1,4 +1,4 @@
-package com.jagdish.thread_basics.thread_creation;
+package com.jagdish.phase1_thread_basics.thread_creation;
 
 /*
 * Represents only the task

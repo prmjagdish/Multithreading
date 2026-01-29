@@ -1,4 +1,4 @@
-package com.jagdish.thread_basics.thread_creation;
+package com.jagdish.phase1_thread_basics.thread_creation;
 
 public class Main {
     static void main(String[] args) {
