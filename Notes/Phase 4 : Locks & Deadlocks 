@@ -1,0 +1,70 @@
+Goal :
+    ✔ Fine-grained locking
+    ✔ Understand how deadlocks happen
+    ✔ Learn how to prevent them
+
++ ReentrantLock
+
+    ReentrantLock is an explicit lock from java.util.concurrent.locks.
+
+    Lock lock = new ReentrantLock();
+
+    Why not synchronized?
+    synchronized	        ReentrantLock
+    Implicit	            Explicit
+    No try	                tryLock()
+    No fairness	            Fair / Unfair
+    One lock style	        Flexible
+
+    Basic usage
+    lock.lock();
+    try {
+        // critical section
+    } finally {
+        lock.unlock();
+    }
+
+    👉 finally is mandatory — forgetting unlock() = 💀 bug
+
++ tryLock()
+
+    Instead of blocking forever, you can try to get a lock.
+
+    if (lock.tryLock()) {
+        try {
+            // got the lock
+        } finally {
+            lock.unlock();
+        }
+    } else {
+        // couldn't get lock
+    }
+
+    Timed version (deadlock-friendly):
+
+    if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {
+        ...
+    }
+
++ Fair vs Unfair Locks
+
+    Lock fairLock = new ReentrantLock(true);   // fair
+    Lock unfairLock = new ReentrantLock(false); // default
+
+    Fair lock
+    Threads acquire lock in FIFO order
+    Less starvation
+    Slower
+
+    Unfair lock (default)
+    Faster
+    Possible starvation
+    Used most of the time
+
++ What is a Deadlock?
+
+    A deadlock happens when:
+    Thread A holds Lock 1 → waits for Lock 2
+    Thread B holds Lock 2 → waits for Lock 1
+
+    🔁 Nobody moves. Ever.

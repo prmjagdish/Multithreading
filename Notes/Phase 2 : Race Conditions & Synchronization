@@ -1,0 +1,65 @@
+Goal : Understand why concurrency causes bugs — and how Java fixes them
+
++ Race Conditions (the root of evil)
+    What is a race condition?
+    When:
+
+    Multiple threads
+    Access shared mutable state
+    Without coordination
+    …and the result depends on timing.
+
+    Classic example
+    balance = balance + amount;
+
++ Critical Section
+    A critical section is code that:
+    Accesses shared data
+    Must be executed by only one thread at a time
+
+    Example:
+    balance += amount; // critical section
+
+    👉 If two threads enter here together → corruption
+
++ synchronized keyword (your first real weapon)
+    What it does
+    Ensures mutual exclusion
+    Only one thread can enter the block/method at a time
+    Uses an intrinsic lock (monitor)
+
+    Method-level
+    public synchronized void deposit(int amount) {
+        balance += amount;
+    }
+
+    Block-level
+    public void withdraw(int amount) {
+        synchronized (this) {
+            balance -= amount;
+        }
+    }
+
++ Intrinsic Locks (important mental model)
+    Every Java object has one lock.
+    synchronized(this) → lock on current object
+    synchronized(account) → lock on account instance
+    Static synchronized → lock on Class object
+
+    If two threads synchronize on different objects, they do NOT block each other.
+
++ Atomic Variables (lock-free safety)
+    For simple operations:
+    AtomicInteger balance = new AtomicInteger(0);
+    balance.addAndGet(100);
+    balance.get();
+
+    ✔ Thread-safe
+    ✔ Faster than synchronized
+    ❌ Limited (can’t guard multiple variables together)
+
+✔ Race conditions are timing bugs
+✔ Critical sections must be protected
+✔ synchronized uses intrinsic locks
+✔ Locks are per-object, not per-method
+✔ Atomics ≠ replacement for all locks

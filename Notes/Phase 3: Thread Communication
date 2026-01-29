@@ -1,0 +1,56 @@
+Goal : Coordinate threads correctly (no busy-waiting, no races, no deadlocks)
+
++ Why wait / notify exist
+    So far you learned:
+    synchronized → mutual exclusion
+    But sometimes threads must wait for a condition
+
+    ❌ Bad approach:
+    while (buffer.isEmpty()) {
+        // spin and waste CPU
+    }
+
+    ✅ Correct approach:
+    while (buffer.isEmpty()) {
+        wait();
+    }
+
++ wait(), notify(), notifyAll() (rules you must obey)
+    Hard rules (no exceptions)
+    Must be called inside synchronized block
+    Called on the same object whose lock you hold
+
+    wait():
+    Releases the lock
+    Puts thread into WAITING
+
+    notify():
+    Wakes one waiting thread
+
+    notifyAll():
+    Wakes all waiting threads
+
++ Guarded Blocks (VERY important)
+    ❌ Wrong (common bug)
+    if (buffer.isEmpty()) {
+        wait();
+    }
+
+    ✅ Correct
+    while (buffer.isEmpty()) {
+        wait();
+    }
+
+    Why? 👇
+
+    Spurious Wakeups (real JVM behavior)
+
+    Threads can wake up without notify.
+    So after waking:
+    Condition may still be false
+    You must re-check condition
+
+    👉 Always wait in a while loop
+
+    Memorize:
+    wait inside while, never inside if
