@@ -1,0 +1,112 @@
++ What is a Thread Pool?
+
+    A thread pool is a collection of reusable worker threads that execute submitted tasks.
+    Threads are created once and kept ready
+    Tasks are submitted to the pool
+    An available thread executes the task
+    After completion, the thread returns to the pool
+    Threads are reused, not recreated
+
+    ✔ Improves performance
+    ✔ Saves system resources
+
++ Thread Pool Working (Based on Example)
+    ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        2,                // corePoolSize
+        4,                // maximumPoolSize
+        1, TimeUnit.HOURS,// keepAliveTime
+        new ArrayBlockingQueue<>(2),
+        new CustomThreadFactory(),
+        new CustomRejectHandler()
+    );
+
+    corePoolSize
+    Minimum number of threads kept alive (even if idle)
+
+    maximumPoolSize
+    Maximum number of threads allowed in the pool
+
+    keepAliveTime
+    Time extra threads stay alive when idle
+
+    timeUnit
+    Unit for keepAliveTime (SECONDS, MINUTES, HOURS)
+
+    workQueue
+    Queue that holds waiting tasks when threads are busy
+
+    threadFactory
+    Creates threads (name, priority, daemon, etc.)
+
+    handler (RejectedExecutionHandler)
+    Action taken when tasks cannot be accepted
+
+    Execution Flow:
+
+    First 2 tasks → handled by core threads
+    Next 2 tasks → placed in queue
+    Extra tasks → new threads created (up to max = 4)
+    If pool + queue full → rejection handler invoked
+    Idle extra threads removed after keep-alive time
+
++ Advantages of Thread Pool
+    ♻ Thread reuse → faster execution
+    🚦 Thread limit control → avoids resource exhaustion
+    ⚡ Less context switching → better CPU usage
+    📥 Automatic task queuing
+    📈 Scalable under load
+    🔁 Supports Callable & Future
+    🛑 Task cancellation & timeout
+    ⚠ Centralized exception handling
+    🔒 Graceful shutdown (no leaks)
+
++ Executor Hierarchy (Java Concurrency)
+    java.lang.Object
+            |
+    java.util.concurrent.Executor
+            |
+            |-- execute(Runnable)
+            |
+    java.util.concurrent.ExecutorService
+            |
+            |-- submit()
+            |-- shutdown()
+            |-- Future support
+            |
+    java.util.concurrent.ScheduledExecutorService
+            |
+            |-- schedule()
+            |-- scheduleAtFixedRate()
+            |-- scheduleWithFixedDelay()
+    ⚙ Implementation Classes
+    ThreadPoolExecutor
+            |
+            |-- newFixedThreadPool
+            |-- newCachedThreadPool
+            |-- newSingleThreadExecutor
+
+
+    ScheduledThreadPoolExecutor
+            |
+            |-- newScheduledThreadPool
+
+    👉 Executors methods are factory helpers
+    👉 Internally, everything uses ThreadPoolExecutor
+
++ CustomThreadFactory (From Example)
+    Purpose:
+    Control how threads are created
+    Set thread name, priority, daemon flag
+
++ RejectedExecutionHandler (From Example)
+    Used when:
+    All threads are busy
+    Queue is full
+    Max thread limit reached
+
+    ✔ Prevents system overload
+    ✔ Allows fallback or logging logic
+
+    🧠 Key Takeaway (Very Important)
+
+    ThreadPoolExecutor controls thread count, task queue, rejection policy, and lifecycle in one place
